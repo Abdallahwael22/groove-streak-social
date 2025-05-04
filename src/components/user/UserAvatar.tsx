@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Settings, User, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from "@/hooks/use-toast";
 
 const UserAvatar = () => {
   // In a real app, this would come from auth context
@@ -22,6 +23,17 @@ const UserAvatar = () => {
   });
   
   const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    // Here you would actually handle the logout logic with authentication
+    // For now, we'll simulate a logout by navigating to the landing page
+    toast({
+      title: "Logged out",
+      description: "You have been successfully logged out.",
+    });
+    navigate('/');
+  };
 
   return (
     <DropdownMenu>
@@ -63,7 +75,7 @@ const UserAvatar = () => {
           <span>Settings</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => navigate('/')} className="text-destructive">
+        <DropdownMenuItem onClick={handleLogout} className="text-destructive">
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>

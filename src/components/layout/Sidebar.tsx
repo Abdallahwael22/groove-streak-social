@@ -1,11 +1,15 @@
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Home, LineChart, Users, Calendar, Settings, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useToast } from "@/hooks/use-toast";
 
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
   const navItems = [
-    { icon: Home, label: 'Dashboard', href: '/' },
+    { icon: Home, label: 'Dashboard', href: '/dashboard' },
     { icon: Calendar, label: 'Habits', href: '/habits' },
     { icon: LineChart, label: 'Progress', href: '/progress' },
     { icon: Users, label: 'Community', href: '/community' },
@@ -13,6 +17,16 @@ const Sidebar = () => {
   ];
   
   const isActive = (path: string) => path === location.pathname;
+
+  const handleLogout = () => {
+    // Here you would actually handle the logout logic with authentication
+    // For now, we'll simulate a logout by navigating to the landing page
+    toast({
+      title: "Logged out",
+      description: "You have been successfully logged out.",
+    });
+    navigate('/');
+  };
 
   return (
     <div className="hidden md:flex flex-col w-64 bg-sidebar p-4 border-r">
@@ -42,13 +56,13 @@ const Sidebar = () => {
       </nav>
       
       <div className="border-t mt-6 pt-4">
-        <Link 
-          to="/logout" 
-          className="flex items-center gap-3 px-3 py-2 text-destructive hover:bg-destructive/10 rounded-md transition-colors"
+        <button 
+          onClick={handleLogout}
+          className="flex w-full items-center gap-3 px-3 py-2 text-destructive hover:bg-destructive/10 rounded-md transition-colors"
         >
           <LogOut size={20} />
           <span>Logout</span>
-        </Link>
+        </button>
       </div>
     </div>
   );
