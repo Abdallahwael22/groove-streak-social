@@ -63,7 +63,7 @@ const UserAvatar = () => {
           <span>Settings</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => navigate('/logout')} className="text-destructive">
+        <DropdownMenuItem onClick={() => navigate('/')} className="text-destructive">
           <LogOut className="mr-2 h-4 w-4" />
           <span>Log out</span>
         </DropdownMenuItem>
