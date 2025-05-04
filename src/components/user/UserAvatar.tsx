@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { 
   DropdownMenu, 
@@ -14,24 +14,46 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from "@/hooks/use-toast";
 
 const UserAvatar = () => {
-  // In a real app, this would come from auth context
+  // Get user data from localStorage or use a default
   const [user, setUser] = useState({
-    name: 'Alex Johnson',
-    email: 'alex@example.com',
+    name: 'Guest User',
+    email: 'user@example.com',
     avatarUrl: '',
-    streak: 7,
+    streak: 0,
   });
   
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  // Load user data from localStorage on component mount
+  useEffect(() => {
+    const savedUser = localStorage.getItem('habitbuilder_user');
+    if (savedUser) {
+      try {
+        const parsedUser = JSON.parse(savedUser);
+        setUser({
+          ...user,
+          ...parsedUser,
+          // Make sure we have a name to display
+          name: parsedUser.name || 'Guest User'
+        });
+      } catch (error) {
+        console.error("Failed to parse user data:", error);
+      }
+    }
+  }, []);
+
   const handleLogout = () => {
-    // Here you would actually handle the logout logic with authentication
-    // For now, we'll simulate a logout by navigating to the landing page
+    // Clear stored user data
+    localStorage.removeItem('habitbuilder_user');
+    
+    // Notify the user
     toast({
       title: "Logged out",
       description: "You have been successfully logged out.",
     });
+    
+    // Navigate to home
     navigate('/');
   };
 
